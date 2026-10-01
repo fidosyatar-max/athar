@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>JajanKu</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- ===== LOGIN & DAFTAR ===== -->
+    <div id="auth">
+      <div class="card authbox">
+        <h1>🐷 JajanKu</h1>
+        <p class="muted">Atur uang saku, kontrol jajan, capai impianmu.</p>
+        <form id="loginForm">
+          <h3>Masuk</h3>
+          <input name="email" type="email" placeholder="Email" required />
+          <input name="pass" type="password" placeholder="Password" required />
+          <button class="btn">Login</button>
+          <button type="button" class="btn ghost" onclick="toggleAuth(true)">
+            Daftar
+          </button>
+        </form>
+        <form id="regForm" hidden>
+          <h3>Daftar</h3>
+          <input name="name" placeholder="Nama" required />
+          <input name="email" type="email" placeholder="Email" required />
+          <input
+            name="pass"
+            type="password"
+            placeholder="Password (min. 4 karakter)"
+            required
+            minlength="4"
+          />
+          <input
+            name="pass2"
+            type="password"
+            placeholder="Konfirmasi password"
+            required
+          />
+          <button class="btn">Daftar</button>
+          <button type="button" class="btn ghost" onclick="toggleAuth(false)">
+            Sudah punya akun
+          </button>
+        </form>
+        <small class="muted"
+          >Login ini hanya simulasi untuk proyek sekolah, bukan sistem keamanan
+          sungguhan.</small
+        >
+      </div>
+    </div>
+
+    <!-- ===== APLIKASI ===== -->
+    <div id="app" hidden>
+      <header>
+        <b id="hello"></b>
+        <button class="btn small" onclick="logout()">Logout</button>
+      </header>
+      <nav id="nav">
+        <button data-p="dash">🏠 Dashboard</button>
+        <button data-p="saku">💵 Uang Saku</button>
+        <button data-p="jajan">🍔 Jajan</button>
+        <button data-p="tabungan">🏦 Tabungan</button>
+        <button data-p="kalk">🧮 Kalkulator</button>
+        <button data-p="riwayat">📝 Riwayat</button>
+        <button data-p="set">⚙️ Pengaturan</button>
+      </nav>
+      <main>
+        <section id="dash"></section>
+
+        <section id="saku">
+          <div class="card">
+            <h3>Tambah Uang Saku</h3>
+            <form id="sakuForm">
+              <select name="cat">
+                <option>Harian</option>
+                <option>Mingguan</option>
+                <option>Bulanan</option>
+              </select>
+              <input
+                name="amount"
+                type="number"
+                min="1"
+                placeholder="Jumlah (Rp)"
+                required
+              />
+              <input name="note" placeholder="Catatan (opsional)" />
+              <button class="btn">Tambah</button>
+            </form>
+          </div>
+          <div class="card">
+            <h3>Riwayat Uang Masuk</h3>
+            <div id="sakuList"></div>
+          </div>
+        </section>
+
+        <section id="jajan">
+          <div class="card">
+            <h3>Batas Jajan Harian</h3>
+            <form id="limitForm">
+              <input
+                name="limit"
+                type="number"
+                min="0"
+                placeholder="Batas per hari (Rp)"
+                required
+              /><button class="btn">Simpan</button>
+            </form>
+            <div id="limitInfo"></div>
+          </div>
+          <div class="card">
+            <h3>Catat Jajan</h3>
+            <form id="jajanForm">
+              <input name="name" placeholder="Nama makanan/minuman" required />
+              <input
+                name="amount"
+                type="number"
+                min="1"
+                placeholder="Harga (Rp)"
+                required
+              />
+              <select name="cat">
+                <option>🍚 Makanan</option>
+                <option>🥤 Minuman</option>
+                <option>🍫 Camilan</option>
+                <option>🛒 Lainnya</option>
+              </select>
+              <input name="date" type="date" required />
+              <input name="note" placeholder="Catatan (opsional)" />
+              <button class="btn">Simpan</button>
+            </form>
+          </div>
+          <div class="card">
+            <h3>Total Jajan</h3>
+            <div id="jajanTotals"></div>
+          </div>
+          <div class="card">
+            <h3>Daftar Jajan</h3>
+            <div id="jajanList"></div>
+          </div>
+        </section>
+
+        <section id="tabungan">
+          <div class="card">
+            <h3>Target Baru</h3>
+            <form id="goalForm">
+              <input
+                name="name"
+                placeholder="Nama target (mis. 🎧 Headset)"
+                required
+              />
+              <input
+                name="target"
+                type="number"
+                min="1"
+                placeholder="Harga target (Rp)"
+                required
+              />
+              <input name="deadline" type="date" />
+              <button class="btn">Buat Target</button>
+            </form>
+          </div>
+          <div class="card">
+            <h3>Menabung</h3>
+            <form id="saveForm">
+              <select name="goal" id="goalSel"></select>
+              <input
+                name="amount"
+                type="number"
+                min="1"
+                placeholder="Jumlah (Rp)"
+                required
+              />
+              <button class="btn">🐷 Tabung</button>
+            </form>
+          </div>
+          <div id="goalList"></div>
+        </section>
+
+        <section id="kalk">
+          <div class="card">
+            <h3>Kalkulator Kembalian</h3>
+            <input id="k1a" type="number" placeholder="Harga (Rp)" /><input
+              id="k1b"
+              type="number"
+              placeholder="Uang dibayar (Rp)"
+            />
+            <p id="k1r" class="big"></p>
+          </div>
+          <div class="card">
+            <h3>Kalkulator Diskon</h3>
+            <input id="k2a" type="number" placeholder="Harga asli (Rp)" /><input
+              id="k2b"
+              type="number"
+              placeholder="Diskon (%)"
+            />
+            <p id="k2r" class="big"></p>
+          </div>
+          <div class="card">
+            <h3>Simulasi Hemat</h3>
+            <input
+              id="k3a"
+              type="number"
+              placeholder="Jajan biasanya per hari (Rp)"
+            /><input
+              id="k3b"
+              type="number"
+              placeholder="Target jajan per hari (Rp)"
+            />
+            <p id="k3r" class="big"></p>
+          </div>
+        </section>
+
+        <section id="riwayat">
+          <div class="card">
+            <h3>Riwayat Transaksi</h3>
+            <div class="row">
+              <input id="q" placeholder="🔍 Cari..." /><select id="ftype">
+                <option value="">Semua</option>
+                <option value="saku">Uang Saku</option>
+                <option value="jajan">Jajan</option>
+                <option value="tabung">Tabungan</option>
+              </select>
+              <button class="btn small" onclick="undo()">
+                ↩️ Undo terakhir
+              </button>
+            </div>
+            <div id="hist"></div>
+          </div>
+        </section>
+
+        <section id="set">
+          <div class="card">
+            <h3>Tema</h3>
+            <button class="btn" onclick="setTheme('light')">☀️ Light</button>
+            <button class="btn" onclick="setTheme('dark')">🌙 Dark</button>
+          </div>
+          <div class="card">
+            <h3>Profil</h3>
+            <p id="prof"></p>
+            <form id="nameForm">
+              <input name="name" placeholder="Nama baru" required /><button
+                class="btn"
+              >
+                Ganti Nama
+              </button>
+            </form>
+            <form id="passForm">
+              <input
+                name="old"
+                type="password"
+                placeholder="Password lama"
+                required
+              /><input
+                name="new"
+                type="password"
+                placeholder="Password baru"
+                minlength="4"
+                required
+              /><button class="btn">Ganti Password</button>
+            </form>
+          </div>
+          <div class="card">
+            <h3>Data</h3>
+            <button class="btn ghost" onclick="resetXP()">
+              Reset XP & level
+            </button>
+            <button class="btn danger" onclick="wipe()">
+              Hapus semua data
+            </button>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
